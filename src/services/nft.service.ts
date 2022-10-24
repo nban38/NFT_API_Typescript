@@ -12,7 +12,7 @@ export class NftService {
         try {
             
             const where : any = {};
-            const limit : number = 10;
+            const limit : number = 30;
             const offset : number = 0 + (param.page - 1) * limit;
             
             
@@ -24,6 +24,7 @@ export class NftService {
                 }
             }
 
+            console.log('keyword::'+param.keyword);
             // nft 타이틀 like 검색
             if(param.keyword){
                 where.nft_title = {

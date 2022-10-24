@@ -17,14 +17,14 @@ export class NftController {
         
         const param = req.body;
         const schema = Joi.object().keys({
-            status : Joi.string(),
-            property : Joi.string(),
-            keyword : Joi.string(),
-            start_price : Joi.number(),
+            status : Joi.string().allow(''),
+            property : Joi.string().allow(''),
+            keyword : Joi.string().allow(''),
+            start_price : Joi.number().optional(),
             end_price : Joi.number(),
-            orderby : Joi.string(),
-            page : Joi.number(),
-            collection_id : Joi.number(),
+            orderby : Joi.string().allow(''),
+            page : Joi.number().allow(''),
+            collection_id : Joi.number().allow(''),
         }).unknown();
 
         try {
