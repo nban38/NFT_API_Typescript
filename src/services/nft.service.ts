@@ -19,11 +19,12 @@ export class NftService {
                 where.collection_id = param.collection_id;
             }
 
-            const result = await NftModel.findAll({
+            const { count, rows } = await NftModel.findAndCountAll({
                 where : where,
                 limit : limit,
                 offset : offset
-            });    
+            });
+            const result = { "total" : count, "row" : rows };
             return result;
 
         } catch (error) {

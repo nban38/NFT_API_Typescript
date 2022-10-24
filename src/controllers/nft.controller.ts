@@ -1,5 +1,6 @@
 import express, { Request, Response, NextFunction } from 'express';
 import Joi from 'joi';
+import { OfferService } from '../services/offer.service';
 import { NftService } from '../services/nft.service';
 
 
@@ -31,12 +32,15 @@ export class NftController {
             await schema.validateAsync(param);
 
             param.page = req.body.page ?? 1;
-            const dbResult = await NftService.selectItemList(param);
+            const dbResult : any = await NftService.selectItemList(param);
+            
+            console.log(dbResult.total);
 
             return res.status(200).json({
                 resCode : '',
                 resMessage : 'OK',
-                resData : dbResult
+                count : dbResult.total,
+                resData : dbResult.row
             });
 
         } catch (vali_err : any ) {
@@ -103,11 +107,31 @@ export class NftController {
             token_id : Joi.number().required(),
         }).unknown();
         
-        return res.status(200).json({
-            resCode : '',
-            resMessage : "OK",
-            resData : '',
-        });
+        try {
+
+            await schema.validateAsync(param);
+
+            const token_id : number = parseInt(param.token_id);
+            console.log('token_id:'+token_id);
+
+            const dbResult : any = await OfferService.selectOfferList(token_id);
+            
+            return res.status(200).json({
+                resCode : '',
+                resMessage : "OK",
+                count : dbResult.total,
+                resData : dbResult.row,
+            });
+
+        } catch (vali_err : any ) {
+
+            console.log(vali_err);
+            return res.status(400).json({ 
+                resCode : 1, 
+                resMessage : vali_err.message,
+                resData : vali_err.details[0].path[0]
+            });
+        }
 
     }
 

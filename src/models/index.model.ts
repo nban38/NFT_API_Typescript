@@ -4,6 +4,7 @@ import { Sequelize } from "sequelize-typescript";
 import { config } from "../config/config";
 import { UserModel } from "./user.model";
 import { NftModel } from "./nft.model";
+import { OfferModel } from "./offer.model";
 
 export const sequelize = new Sequelize(
     config.development.database,
@@ -20,4 +21,4 @@ export const sequelize = new Sequelize(
     }
 );
 
-sequelize.addModels([UserModel, NftModel]);
+sequelize.addModels([UserModel, NftModel, OfferModel]);
