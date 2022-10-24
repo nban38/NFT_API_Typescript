@@ -2,7 +2,10 @@ import { OfferModel } from "../models/offer.model";
 
 export class OfferService {
 
-     /** offer 리스트 */
+     /** 
+      * offer 리스트 
+      * @param token_id : Int
+      **/
      static selectOfferList = async function(token_id : number) {
         
         try {

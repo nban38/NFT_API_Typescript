@@ -100,6 +100,12 @@ export class NftController {
         }
     };
 
+    /**
+     * Offer 리스트
+     * @param req 
+     * @param res 
+     * @param next 
+     */
     static getOfferList = async (req : Request, res : Response) => {
         
         const param = req.params;
