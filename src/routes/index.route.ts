@@ -17,4 +17,7 @@ router.get('/nft/getItemDetail/:token_id', NftController.getItemDetail);
 // Offer 리스트
 router.get('/nft/getOfferList/:token_id', NftController.getOfferList);
 
+// Deal history 리스트
+router.get('/nft/getDealHistoryList/:token_id/:page', NftController.getDealHistoryList);
+
 export default router;

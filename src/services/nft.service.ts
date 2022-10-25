@@ -1,7 +1,11 @@
 import { NftModel } from "../models/nft.model";
 import { Op } from '@sequelize/core';
+import NodeCache from "node-cache";
+
 
 export class NftService {
+    
+    //public myCache = new NodeCache({ stdTTL: 100, checkperiod: 6000 });
 
     /** 
       * offer 리스트 
@@ -17,7 +21,7 @@ export class NftService {
             
             
             // 검색 시작가 ~ 종료가
-            if(param.start_price >= 0 && param.end_price >= 0) {
+            if(param.start_price >= 0 && param.end_price > 0) {
                 where.nft_price = {
                     [Op.gte]: param.start_price, // nft_price >= start_price
                     [Op.lte]: param.end_price,  // nft_price <= end_price
@@ -62,11 +66,22 @@ export class NftService {
      * @param token_id : int
      **/
     static selectItemId = async function(token_id : number) {
-            
-        const result = await NftModel.findOne({
-            where : { nft_token_id : token_id }
-        });
+        
+        var  myCache = new NodeCache({ stdTTL: 100, checkperiod: 6000 });
+        var dbResult : any = myCache.get('nft-'+token_id);
+        console.log("cache::" + dbResult);
 
-        return result;
+        if(dbResult == undefined) {
+            const result = await NftModel.findOne({
+                raw : true,
+                where : { nft_token_id : token_id }
+            });
+            console.log(result);
+            var success = myCache.set('nft-'+token_id, JSON.stringify(result), 500);
+            dbResult = result;
+            console.log( success );
+        }
+        
+        return dbResult;
     }
 }
