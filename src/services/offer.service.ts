@@ -1,5 +1,6 @@
 import { OfferModel } from "../models/offer.model";
 
+
 export class OfferService {
 
      /** 
@@ -21,5 +22,27 @@ export class OfferService {
             console.log(error);
             return (error as Error).message;
         }
+    }
+
+    static insertItemOffer = async (params : any) => {
+        
+        try {
+
+            const result = await OfferModel.create({
+                nft_token_id : params.token_id,
+                of_flag : 1,
+                wallet_id : params.wallet_id,
+                of_price : params.offer_price,
+            });
+            return result;
+
+        } catch ( error ) {
+
+            return error;
+        }
+    }
+
+    static selectOfferNo = async ( param : any ) => {
+        
     }
 }

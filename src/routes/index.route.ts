@@ -20,4 +20,7 @@ router.get('/nft/getOfferList/:token_id', NftController.getOfferList);
 // Deal history 리스트
 router.get('/nft/getDealHistoryList/:token_id/:page', NftController.getDealHistoryList);
 
+// Offer 신청
+router.post('/nft/setItemOffer', NftController.setItemOffer);
+
 export default router;

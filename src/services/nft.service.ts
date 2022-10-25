@@ -67,21 +67,30 @@ export class NftService {
      **/
     static selectItemId = async function(token_id : number) {
         
-        var  myCache = new NodeCache({ stdTTL: 100, checkperiod: 6000 });
-        var dbResult : any = myCache.get('nft-'+token_id);
-        console.log("cache::" + dbResult);
+        try {
 
-        if(dbResult == undefined) {
-            const result = await NftModel.findOne({
-                raw : true,
-                where : { nft_token_id : token_id }
-            });
-            console.log(result);
-            var success = myCache.set('nft-'+token_id, JSON.stringify(result), 500);
-            dbResult = result;
-            console.log( success );
+            var  myCache = new NodeCache({ stdTTL: 100, checkperiod: 6000 });
+            var dbResult : any = myCache.get('nft-'+token_id);
+            console.log("cache::" + dbResult);
+
+            if(dbResult == undefined) {
+                const result = await NftModel.findOne({
+                    raw : true, // 결과 object 만 반환
+                    where : { nft_token_id : token_id }
+                });
+                console.log(result);
+                var success = myCache.set('nft-'+token_id, JSON.stringify(result), 500);
+                dbResult = result;
+                console.log( success );
+            }
+            
+            return dbResult;
+
+        } catch ( error ) {
+
+            return error;
+            
         }
         
-        return dbResult;
     }
 }

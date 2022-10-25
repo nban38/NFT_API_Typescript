@@ -141,6 +141,12 @@ export class NftController {
         }
     }
 
+    /**
+     * 거래 내역 리스트
+     * @param req 
+     * @param res 
+     * @returns 
+     */
     static getDealHistoryList = async (req : Request, res : Response) => {
 
         const param = req.params;
@@ -175,6 +181,81 @@ export class NftController {
         } catch (vali_err : any ) {
 
             console.log(vali_err);
+            return res.status(400).json({ 
+                resCode : 1, 
+                resMessage : vali_err.message,
+                resData : vali_err.details[0].path[0]
+            });
+        }
+    }
+
+    /**
+     * offer 넣기
+     * @param req 
+     * @param res 
+     * @returns 
+     */
+    static setItemOffer = async (req : Request, res : Response) => {
+        const param = req.body;
+        const schema = Joi.object().keys({
+            wallet_id : Joi.string().required(),    // 지갑 주소
+            offer_price : Joi.number().required(),  // offer 가격
+            token_id : Joi.number().required()      // NFT 토큰 id
+        }).unknown();
+
+        try {
+
+            await schema.validateAsync(param);
+
+            const token_id : number = parseInt(param.token_id);
+            const nft : any = await NftService.selectItemId(token_id);
+            if(!nft?.nft_token_id) {
+                return res.status(400).json({
+                    resCode : '3',
+                    resMessage : "NFT 빈정보",
+                    resData : 'token_id',
+                });
+            }
+
+            const result = await OfferService.insertItemOffer(param);    
+            return res.status(200).json({
+                resCode : '',
+                resMessage : "OK",
+                resData : result,
+            });
+
+        } catch(vali_err : any) {
+
+            console.log(vali_err);
+            return res.status(400).json({ 
+                resCode : 1, 
+                resMessage : vali_err.message,
+                resData : vali_err.details[0].path[0]
+            });
+        }
+    }
+
+    /**
+     * offer 신청 취소
+     * @param req 
+     * @param res 
+     * @returns 
+     */
+    static setOfferCancel = async (req : Request, res : Response) => {
+        const param = req.body;
+        const schema = Joi.object().keys({
+            wallet_id : Joi.string().required(),    // 지갑 주소
+            of_no : Joi.number().required(),  // offer seq
+        }).unknown();
+
+        try {
+
+            await schema.validateAsync(param);
+
+            
+
+        } catch (vali_err : any) {
+
             return res.status(400).json({ 
                 resCode : 1, 
                 resMessage : vali_err.message,
