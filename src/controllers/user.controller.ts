@@ -29,7 +29,7 @@ export class UsersController {
 
         } catch ( vali_err : any ) {
 
-            console.log(vali_err);
+            //console.log(vali_err);
             return res.status(400).json({ 
                 resCode : 1, 
                 resMessage : vali_err.message,

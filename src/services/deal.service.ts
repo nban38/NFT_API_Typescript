@@ -30,4 +30,25 @@ export class DealService {
             return (error as Error).message;
         }
     }
+
+    static insertDealHistory = async (param : any) => {
+        try {
+
+            const result = await DealModel.create({
+                collection_id : param.collection_id,
+                nft_token_id : param.token_id,
+                deal_transaction : param.transaction_code,
+                deal_type : 1,
+                deal_price : param.of_price,
+                deal_from_wallet : param.buyer_wallet,
+                deal_to_wallet : param.wallet_id,
+                deal_create_date : Math.floor(new Date().getTime() / 1000)
+            });
+            return result;
+
+        } catch ( error ) {
+
+            return error;
+        }
+    }
 }

@@ -1,6 +1,7 @@
 import express, { Router } from 'express';
 import { UsersController } from '../controllers/user.controller';
 import { NftController } from '../controllers/nft.controller';
+import { MypageController } from '../controllers/mypage.controller';
 
 
 const router = Router();
@@ -22,5 +23,10 @@ router.get('/nft/getDealHistoryList/:token_id/:page', NftController.getDealHisto
 
 // Offer 신청
 router.post('/nft/setItemOffer', NftController.setItemOffer);
+
+// Offer 신청 취소
+router.post('/nft/setOfferCancel', NftController.setOfferCancel);
+
+router.post('/mypage/getMyItemList', MypageController.getMyItemList);
 
 export default router;
